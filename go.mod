@@ -1,4 +1,4 @@
-module github/yyxing/boot
+module github.com/yyxing/boot
 
 go 1.15
 
