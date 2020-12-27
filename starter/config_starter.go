@@ -7,6 +7,7 @@ import (
 	"github.com/yyxing/boot/context"
 	"io/ioutil"
 	"log"
+	"os"
 	"path"
 	"path/filepath"
 	"strings"
@@ -25,8 +26,23 @@ var (
 	localConfig viper.Viper
 )
 
+func PathExists(path string) bool {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true
+	}
+	if os.IsNotExist(err) {
+		return false
+	}
+	return false
+
+}
 func (config *ConfigStarter) Init(context context.ApplicationContext) {
 	configPath := "./resource"
+	if !PathExists(configPath) {
+		logrus.Warnf("You should store the configuration in the .resource directory")
+		return
+	}
 	v := viper.New()
 	if config.ConfigPath != "" && len(config.ConfigPath) > 0 {
 		if strings.Contains(config.ConfigPath, string(filepath.Separator)) {
