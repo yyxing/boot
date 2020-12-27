@@ -6,7 +6,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	translator "github.com/go-playground/validator/v10/translations/zh"
 	"github.com/sirupsen/logrus"
-	"github/yyxing/boot/context"
+	"github.com/yyxing/boot/context"
 	"strings"
 )
 

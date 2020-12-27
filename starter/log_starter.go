@@ -3,7 +3,8 @@ package starter
 import (
 	log "github.com/sirupsen/logrus"
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
-	"github/yyxing/boot/context"
+	"github.com/yyxing/boot"
+	"github.com/yyxing/boot/context"
 	"strings"
 )
 
@@ -46,5 +47,5 @@ func (starter LogStarter) Init(context context.ApplicationContext) {
 }
 
 func (starter LogStarter) GetOrder() int {
-	return core.Int32Min + 1
+	return boot.Int32Min + 1
 }

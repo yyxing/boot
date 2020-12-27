@@ -1,8 +1,8 @@
 package boot
 
 import (
-	"github/yyxing/boot/context"
-	"github/yyxing/boot/starter"
+	"github.com/yyxing/boot/context"
+	"github.com/yyxing/boot/starter"
 )
 
 type Application struct {

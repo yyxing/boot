@@ -1,7 +1,7 @@
 package starter
 
 import (
-	"github/yyxing/boot/context"
+	"github.com/yyxing/boot/context"
 )
 
 // 类似Java的Abstract类

@@ -3,8 +3,8 @@ package starter
 import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"github/yyxing/boot"
-	"github/yyxing/boot/context"
+	"github.com/yyxing/boot"
+	"github.com/yyxing/boot/context"
 	"io/ioutil"
 	"log"
 	"path"
