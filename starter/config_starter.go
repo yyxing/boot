@@ -26,21 +26,27 @@ var (
 	localConfig viper.Viper
 )
 
-func PathExists(path string) bool {
+func pathExists(path string) (bool, int) {
 	_, err := os.Stat(path)
 	if err == nil {
-		return true
+		files, _ := ioutil.ReadDir(path)
+		return true, len(files)
 	}
 	if os.IsNotExist(err) {
-		return false
+		return false, 0
 	}
-	return false
+	return false, 0
 
 }
 func (config *ConfigStarter) Init(context context.ApplicationContext) {
 	configPath := "./resource"
-	if !PathExists(configPath) {
+	exists, fileCount := pathExists(configPath)
+	if !exists {
 		logrus.Warnf("You should store the configuration in the .resource directory")
+		return
+	}
+	if fileCount <= 0 {
+		logrus.Warnf("You should store a configuration file in the .resource directory")
 		return
 	}
 	v := viper.New()
