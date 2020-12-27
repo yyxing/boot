@@ -1,0 +1,74 @@
+package starter
+
+import (
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
+	"github/yyxing/boot"
+	"github/yyxing/boot/context"
+	"io/ioutil"
+	"log"
+	"path"
+	"path/filepath"
+	"strings"
+)
+
+type ConfigStarter struct {
+	ConfigPath string
+	AbstractStarter
+}
+
+const (
+	GlobalConfigKey = "SystemConfig"
+)
+
+var (
+	localConfig viper.Viper
+)
+
+func (config *ConfigStarter) Init(context context.ApplicationContext) {
+	configPath := "./resource"
+	v := viper.New()
+	if config.ConfigPath != "" && len(config.ConfigPath) > 0 {
+		if strings.Contains(config.ConfigPath, string(filepath.Separator)) {
+			v.SetConfigFile(config.ConfigPath)
+		} else {
+			v.AddConfigPath(configPath)
+			v.SetConfigName(config.ConfigPath)
+		}
+	} else {
+		files, err := ioutil.ReadDir(configPath)
+		if err != nil {
+			log.Println("Find config files failed use default config")
+		}
+		v.AddConfigPath(configPath)
+		suffix := ""
+		for _, file := range files {
+			if !file.IsDir() {
+				suffix = path.Ext(file.Name())[1:]
+				switch suffix {
+				case "yml", "yaml", "properties", "ini":
+					v.SetConfigName(file.Name())
+					v.SetConfigType(suffix)
+				default:
+					logrus.Errorf("config %s type can not parse", file.Name())
+				}
+			}
+		}
+	}
+	if err := v.ReadInConfig(); err != nil {
+		panic("read config failed error message:" + err.Error())
+	}
+	context.Set(GlobalConfigKey, *v)
+	localConfig = *v
+	log.Println("config init success")
+}
+func GetConfig() viper.Viper {
+	return localConfig
+}
+func (config *ConfigStarter) Finalize(context context.ApplicationContext) {
+	context.Remove(GlobalConfigKey)
+}
+
+func (config *ConfigStarter) GetOrder() int {
+	return boot.Int32Min
+}
