@@ -7,11 +7,12 @@ import (
 
 type Application struct {
 	context context.ApplicationContext
+	isInit  bool
 }
 
-// TODO 由用户指定starter启动 暂未实现
-func New() {
-
+// 获取context配置
+func (application *Application) Get(key string) interface{} {
+	return application.context.Get(key)
 }
 func (application *Application) RegisterStarter(s context.Starter) Application {
 	application.context.Register(s)
@@ -38,27 +39,29 @@ func Default() Application {
 	application.context.Register(&starter.ValidatorStarter{})
 	return application
 }
-func (application *Application) Run() {
-	application.context.SortStarter()
-	application.init()
-	application.start()
-}
-
-// 初始化starter
-func (application *Application) init() {
-	for _, starter := range application.context.GetAllStarters() {
-		// 调用每个starter的Init方法
-		starter.Init(application.context)
-	}
-}
 
 // 启动所有starter
-func (application *Application) start() {
+func (application *Application) Run() {
+	application.context.SortStarter()
+	if !application.isInit {
+		application.Init()
+	}
 	for _, starter := range application.context.GetAllStarters() {
 		// 调用每个starter的start方法
 		starter.Start(application.context)
 	}
 }
+
+// 初始化starter
+func (application *Application) Init() {
+	application.context.SortStarter()
+	for _, starter := range application.context.GetAllStarters() {
+		// 调用每个starter的Init方法
+		starter.Init(application.context)
+	}
+	application.isInit = true
+}
+
 func (application *Application) Stop() {
 	// 停止所有starter
 	for _, starter := range application.context.GetAllStarters() {
