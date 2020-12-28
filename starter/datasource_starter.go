@@ -57,12 +57,7 @@ func Transaction(tx *gorm.DB, worker func() error) error {
 func (starter *DatasourceStarter) Init(context context.ApplicationContext) {
 	config := GetConfig()
 	starter.datasourceAssembly(config)
-}
-
-// 正式建立连接
-func (starter *DatasourceStarter) Start(context context.ApplicationContext) {
 	dbMap = make(map[string]*gorm.DB)
-	config := GetConfig()
 	loggerConfig := logger.Config{}
 	for i, datasource := range starter.datasourceList {
 		//driverName := datasource.Driver
