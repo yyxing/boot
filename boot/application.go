@@ -25,8 +25,7 @@ func TestEnv(configPath string) Application {
 	application.context.Register(&starter.DatasourceStarter{})
 	application.context.Register(&starter.LogStarter{})
 	application.context.Register(&starter.ValidatorStarter{})
-	application.context.SortStarter()
-	application.run()
+	application.Run()
 	return application
 }
 
@@ -37,12 +36,10 @@ func Default() Application {
 	application.context.Register(&starter.DatasourceStarter{})
 	application.context.Register(&starter.LogStarter{})
 	application.context.Register(&starter.ValidatorStarter{})
-	application.context.SortStarter()
-	application.run()
 	return application
 }
-
-func (application *Application) run() {
+func (application *Application) Run() {
+	application.context.SortStarter()
 	application.init()
 	application.start()
 }
