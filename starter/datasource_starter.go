@@ -110,5 +110,5 @@ func (starter *DatasourceStarter) Finalize(context context.ApplicationContext) {
 }
 
 func (starter *DatasourceStarter) GetOrder() int {
-	return boot.Int32Min + 2
+	return boot.Int64Min + 2
 }

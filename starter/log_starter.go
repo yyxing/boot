@@ -47,5 +47,5 @@ func (starter LogStarter) Init(context context.ApplicationContext) {
 }
 
 func (starter LogStarter) GetOrder() int {
-	return boot.Int32Min + 1
+	return boot.Int64Min + 1
 }

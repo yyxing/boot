@@ -92,5 +92,5 @@ func (config *ConfigStarter) Finalize(context context.ApplicationContext) {
 }
 
 func (config *ConfigStarter) GetOrder() int {
-	return boot.Int32Min
+	return boot.Int64Min
 }
